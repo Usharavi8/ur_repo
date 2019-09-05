@@ -1,0 +1,59 @@
+Redis Installation And Configuration Links::
+
+https://linuxize.com/post/how-to-install-and-configure-redis-on-centos-7/
+
+https://www.digitalocean.com/community/tutorials/how-to-install-secure-redis-centos-7
+
+https://linuxtechlab.com/how-install-redis-server-linux/
+
+Commands Used ::
+cd /usr/src/
+sudo  yum install wget gcc make
+sudo wget http://download.redis.io/releases/redis-5.0.4.tar.gz
+sudo tar -xvf redis-5.0.4.tar.gz
+ cd redis-5.0.4
+ cd deps/
+ sudo make hiredis lua jemalloc linenoise
+ sudo make geohash-int----> This is not happend properly but dont worry it is optional
+ sudo make distclean
+ sudo make
+ sudo make install
+ sudo make test
+ cd /utils
+ sudo ./install_server.sh ----> Configuring port and path
+ sudo vi /etc/redis/6379.conf
+ echo 'Tcs#1234' | sha1sum ---> creating required password for redis
+ sudo systemctl start redis.service
+ systemctl start redis_6379 (or) redis-cli (or) redis-cli -h 10.134.96.54 -p 6379
+ ss -an | grep 6379 ---> checking running status and listening ports & ip
+ 
+ 
+Jupyterhub Installation and Configuration Detailed Links::
+
+http://wiki.docking.org/index.php/How_to_install_and_configure_JupyterHub
+
+https://jinyi.me/2015/12/SetUp-Jupyterhub-in-CEntOS-7/
+
+https://github.com/jupyterhub/systemdspawner
+
+https://github.com/jupyterhub/jupyterhub/wiki/Installation-of-Jupyterhub-on-remote-server
+
+Commands Used::
+
+
+sudo jupyterhub -f /home/ubuntu/jupyterhub_config.py
+
+sudo jupyterhub
+
+below is sample jupyterhub.service file added in /usr/lib/systemd/system/jupyterhub.service
+
+[Unit]
+Description=Jupyterhub
+
+[Service]
+User=jupyterhub
+ExecStart=/usr/bin/jupyterhub --JupyterHub.spawner_class=sudospawner.SudoSpawner
+WorkingDirectory=/usr/lib/systemd/system/jupyterhub/jupyterhub
+
+[Install]
+WantedBy=multi-user.target
